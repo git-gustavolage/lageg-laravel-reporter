@@ -1,0 +1,38 @@
+{
+    "name": "lageg/reporter",
+    "description": "Laravel Reporter",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "report",
+        "export",
+        "pdf",
+        "excel"
+    ],
+    "authors": [
+        {
+            "name": "lageg"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/contracts": "^10.0|^11.0|^12.0",
+        "illuminate/queue": "^10.0|^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lageg\\Reporter\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lageg\\Reporter\\ReporterServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
