@@ -5,7 +5,7 @@ namespace Lageg\Reporter\Traits;
 use Lageg\Reporter\Contracts\Component;
 use Lageg\Reporter\Exceptions\NotRegisterComponentException;
 
-trait ProvidesComponents
+trait HasComponents
 {
     protected array $components = [];
 
