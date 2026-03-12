@@ -10,7 +10,7 @@ class ReporterServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/reporter.php',
+            __DIR__ . '/../../../../config/reporter.php',
             'reporter'
         );
 
@@ -30,7 +30,7 @@ class ReporterServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
 
             $this->publishes([
-                __DIR__ . '/../../config/reporter.php' => config_path('reporter.php'),
+                __DIR__ . '/../../../../config/reporter.php' => config_path('reporter.php'),
             ], 'reporter');
         }
     }
