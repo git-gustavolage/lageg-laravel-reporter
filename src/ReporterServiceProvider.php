@@ -9,7 +9,10 @@ class ReporterServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/reporter.php', 'reporter');
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/reporter.php',
+            'reporter'
+        );
 
         $this->app->bind('report.builder', function ($app) {
             return function ($exporter) {
@@ -24,8 +27,11 @@ class ReporterServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->publishes([
-            __DIR__ . '/../../config/reporter.php' => config_path('reporter.php'),
-        ], 'migrator-config');
+        if ($this->app->runningInConsole()) {
+
+            $this->publishes([
+                __DIR__ . '/../../config/reporter.php' => config_path('reporter.php'),
+            ], 'reporter');
+        }
     }
 }
