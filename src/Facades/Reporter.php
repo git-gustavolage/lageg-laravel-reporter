@@ -5,8 +5,7 @@ namespace Lageg\Reporter\Facades;
 use Illuminate\Support\Facades\Facade;
 use Lageg\Reporter\Builders\ReportBuilder;
 use Lageg\Reporter\Contracts\Builder;
-use Lageg\Reporter\Contracts\Chunkrizable;
-use Lageg\Reporter\Contracts\Exporter;
+use Lageg\Reporter\Contracts\Exportable;
 
 class Reporter extends Facade
 {
@@ -15,8 +14,8 @@ class Reporter extends Facade
         return 'report.builder';
     }
 
-    public static function make(Exporter|Chunkrizable $exporter): Builder
+    public static function make(Exportable $exportable): Builder
     {
-        return new ReportBuilder($exporter);
+        return (new ReportBuilder())->make($exportable);
     }
 }

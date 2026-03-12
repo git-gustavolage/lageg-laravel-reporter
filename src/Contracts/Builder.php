@@ -6,9 +6,9 @@ use Lageg\Reporter\Report;
 
 interface Builder
 {
-    public function using(string $driver): self;
-    public function config(array $config): self;
+    public function make(Exportable $exportable): static;
+    public function using(string $driver): static;
+    public function config(array $config): static;
+    public function driver(): Driver;
     public function generate(): Report;
-    public function chunkrize(): Report;
-    public function queue(string $queue = 'default');
 }

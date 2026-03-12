@@ -3,35 +3,49 @@
 namespace Lageg\Reporter\Builders;
 
 use Lageg\Reporter\Contracts\Builder;
-use Lageg\Reporter\Contracts\Chunkrizable;
 use Lageg\Reporter\Contracts\Driver;
-use Lageg\Reporter\Contracts\Exporter;
-use Lageg\Reporter\Jobs\GenerateReportJob;
+use Lageg\Reporter\Contracts\Exportable;
 use Lageg\Reporter\Report;
 
 class ReportBuilder implements Builder
 {
-    protected ?string $driverClass = null;
+    protected string $driver;
+    protected Exportable $exportable;
     protected array $config = [];
 
-    public function __construct(protected Exporter|Chunkrizable $exporter) {}
+    public function __construct(?string $driver = null)
+    {
+        $this->driver = $driver ?? config('reporter.default_driver');
+    }
 
     public function resolveDriver(): Driver
     {
-        if (!$this->driverClass) {
-            throw new \RuntimeException('No report driver defined.');
+        if (class_exists($this->driver)) {
+            return app()->make($this->driver);
         }
 
-        return app($this->driverClass);
+        return app('reporter.manager')->driver($this->driver);
     }
 
-    public function using(string $driver): Builder
+    public function using(string $driver): static
     {
-        $this->driverClass = $driver;
+        $this->driver = $driver;
+
         return $this;
     }
 
-    public function config(array $config): Builder
+    public function driver(): Driver
+    {
+        return $this->resolveDriver();
+    }
+
+    public function make(Exportable $exportable): static
+    {
+        $this->exportable = $exportable;
+        return $this;
+    }
+
+    public function config(array $config): static
     {
         $this->config = $config;
         return $this;
@@ -40,23 +54,6 @@ class ReportBuilder implements Builder
     public function generate(): Report
     {
         return $this->resolveDriver()
-            ->config($this->config)
-            ->generate($this->exporter);
-    }
-
-    public function chunkrize(): Report
-    {
-        return $this->resolveDriver()
-            ->config($this->config)
-            ->chunkrize($this->exporter);
-    }
-
-    public function queue(string $queue = 'default')
-    {
-        dispatch(new GenerateReportJob(
-            $this->exporter,
-            $this->driverClass,
-            $this->config
-        ))->onQueue($queue);
+            ->generate($this->exportable, $this->config);
     }
 }

@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Storage;
 class Report
 {
     public function __construct(
-        public string $content,
-        public string $mime,
-        public string $filename
+        public readonly string $content,
+        public readonly string $mime,
+        public readonly string $filename
     ) {}
 
     public function download()
@@ -31,7 +31,7 @@ class Report
 
     public function output(): string
     {
-        $path = tempnam(sys_get_temp_dir(), 'this_');
+        $path = sys_get_temp_dir() . '/' . $this->filename;
 
         file_put_contents($path, $this->content);
 
