@@ -5,7 +5,6 @@ namespace Lageg\Reporter;
 use Illuminate\Support\Str;
 use Lageg\Reporter\Contracts\Component;
 use Lageg\Reporter\Contracts\Exportable;
-use Lageg\Reporter\Exceptions\NotRegisterComponentException;
 
 abstract class Exporter implements Exportable
 {
@@ -134,9 +133,9 @@ abstract class Exporter implements Exportable
     /**
      * Retrieve a registered component by alias or class name.
      *
-     * @throws NotRegisterComponentException
+     * @return Component|null
      */
-    public function query(string $component): Component
+    public function query(string $component): ?Component
     {
         if (isset($this->components[$component])) {
             return $this->components[$component];
@@ -148,7 +147,7 @@ abstract class Exporter implements Exportable
             }
         }
 
-        throw NotRegisterComponentException::for($component);
+        return null;
     }
 
 

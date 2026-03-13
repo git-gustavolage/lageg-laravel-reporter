@@ -14,6 +14,6 @@ interface Exportable
     /** @return Component[] */
     public function components(): array;
     public function has(string $component): bool;
-    public function query(string $component): Component;
+    public function query(string $component): ?Component;
     public function register(Component $component): self;
 }
