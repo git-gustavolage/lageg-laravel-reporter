@@ -14,7 +14,7 @@ class ReporterServiceProvider extends ServiceProvider
             'reporter'
         );
 
-        $this->app->bind('report.builder', function ($app) {
+        $this->app->bind('reporter.builder', function ($app) {
             return function ($exporter) {
                 return new ReportBuilder($exporter);
             };
