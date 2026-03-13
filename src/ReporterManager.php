@@ -14,21 +14,21 @@ class ReporterManager extends Manager
 
     public function createPdfDriver(): Driver
     {
-        $class = config('reporter.drivers.pdf');
+        $class = config('reporter.drivers.pdf.class');
 
         return $this->container->make($class);
     }
 
     public function createXlsxDriver(): Driver
     {
-        $class = config('reporter.drivers.xlsx');
+        $class = config('reporter.drivers.xlsx.class');
 
         return $this->container->make($class);
     }
 
     public function createCsvDriver(): Driver
     {
-        $class = config('reporter.drivers.csv');
+        $class = config('reporter.drivers.csv.class');
 
         return $this->container->make($class);
     }
