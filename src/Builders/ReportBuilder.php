@@ -13,17 +13,29 @@ class ReportBuilder implements Builder
     protected Exportable $exportable;
     protected array $config = [];
 
+    protected function resolveDriverName(): string
+    {
+        return $this->driver ?? config('reporter.default_driver');
+    }
+
+    protected function resolveConfig(): array
+    {
+        $driver = $this->resolveDriverName();
+
+        $defaultConfig = config("reporter.drivers.$driver.config", []);
+
+        return array_merge($defaultConfig, $this->config);
+    }
+
     public function resolveDriver(): Driver
     {
-        if (!$this->driver) {
-            $this->driver = config('reporter.default_driver');
+        $driver = $this->resolveDriverName();
+
+        if (class_exists($driver)) {
+            return app()->make($driver);
         }
 
-        if (class_exists($this->driver)) {
-            return app()->make($this->driver);
-        }
-
-        return app('reporter.manager')->driver($this->driver);
+        return app('reporter.manager')->driver($driver);
     }
 
     public function using(string $driver): static
@@ -41,18 +53,20 @@ class ReportBuilder implements Builder
     public function make(Exportable $exportable): static
     {
         $this->exportable = $exportable;
+
         return $this;
     }
 
     public function config(array $config): static
     {
-        $this->config = $config;
+        $this->config = array_merge($this->config, $config);
+
         return $this;
     }
 
     public function generate(): Report
     {
         return $this->resolveDriver()
-            ->generate($this->exportable, $this->config);
+            ->generate($this->exportable, $this->resolveConfig());
     }
 }
