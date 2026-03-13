@@ -2,16 +2,15 @@
 
 namespace Lageg\Reporter;
 
-use Illuminate\Support\Str;
 use Lageg\Reporter\Contracts\Component;
 use Lageg\Reporter\Contracts\Exportable;
 
 abstract class Exporter implements Exportable
 {
     /**
-     * @var string|null $filename
+     * @var string $filename
      */
-    protected ?string $filename = null;
+    protected string $filename;
 
     /**
      * The additional data that can be shared across layers.
@@ -26,26 +25,6 @@ abstract class Exporter implements Exportable
      * @var Component[]
      */
     protected array $components = [];
-
-
-    /**
-     * Create a new exporter instance.
-     */
-    public function __construct()
-    {
-        $this->filename = Str::uuid()->toString();
-
-        $this->boot();
-    }
-
-    /**
-     * Boot the exporter.
-     *
-     * This method may be overridden by child exporters
-     * to register components or initialize context data.
-     */
-    protected function boot(): void {}
-
 
     /**
      * Get the filename of the report.
