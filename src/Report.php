@@ -14,6 +14,11 @@ class Report
 
     public function response()
     {
+        return response()->file($this->output());
+    }
+
+    public function download()
+    {
         $headers = [
             'Content-Type' => $this->mime,
             'Content-Disposition' => 'attachment; filename="' . $this->filename . '"'
