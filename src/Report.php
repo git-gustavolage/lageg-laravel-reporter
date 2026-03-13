@@ -12,7 +12,7 @@ class Report
         public readonly string $filename
     ) {}
 
-    public function download()
+    public function response()
     {
         $headers = [
             'Content-Type' => $this->mime,
