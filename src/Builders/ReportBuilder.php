@@ -13,13 +13,12 @@ class ReportBuilder implements Builder
     protected Exportable $exportable;
     protected array $config = [];
 
-    public function __construct(?string $driver = null)
-    {
-        $this->driver = $driver ?? config('reporter.default_driver');
-    }
-
     public function resolveDriver(): Driver
     {
+        if (!$this->driver) {
+            $this->driver = config('reporter.default_driver');
+        }
+
         if (class_exists($this->driver)) {
             return app()->make($this->driver);
         }
@@ -34,7 +33,7 @@ class ReportBuilder implements Builder
         return $this;
     }
 
-    public function driver(): Driver
+    public function getDriver(): Driver
     {
         return $this->resolveDriver();
     }
