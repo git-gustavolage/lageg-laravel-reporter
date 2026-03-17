@@ -9,7 +9,7 @@ return [
 
 
     /**
-     * Configuration of the default suported drivers: pdf, xlsx, csv
+     * Configuration of the default supported drivers: pdf, xlsx, csv
      */
     'drivers' => [
 
