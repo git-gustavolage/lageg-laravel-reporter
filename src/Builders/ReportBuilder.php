@@ -64,6 +64,11 @@ class ReportBuilder implements Builder
         return $this;
     }
 
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
     public function generate(): Report
     {
         return $this->resolveDriver()
