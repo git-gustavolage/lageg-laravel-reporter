@@ -13,4 +13,11 @@ class TestCase extends Orchestra
             ReporterServiceProvider::class,
         ];
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['view']->addLocation(__DIR__ . '/Data/views');
+    }
 }
