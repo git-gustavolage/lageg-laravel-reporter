@@ -3,7 +3,9 @@
 namespace Lageg\Reporter;
 
 use Illuminate\Support\Manager;
+use InvalidArgumentException;
 use Lageg\Reporter\Contracts\Driver;
+use Override;
 
 class ReporterManager extends Manager
 {
@@ -12,23 +14,20 @@ class ReporterManager extends Manager
         return config('reporter.default_driver', 'pdf');
     }
 
-    public function createPdfDriver(): Driver
+        #[Override]
+    protected function createDriver($driver): Driver
     {
-        $class = config('reporter.drivers.pdf.class');
+        $config = config("reporter.drivers.$driver");
 
-        return $this->container->make($class);
-    }
+        if (! $config) {
+            throw new InvalidArgumentException("Driver [$driver] is not configured.");
+        }
 
-    public function createXlsxDriver(): Driver
-    {
-        $class = config('reporter.drivers.xlsx.class');
+        $class = $config['class'] ?? null;
 
-        return $this->container->make($class);
-    }
-
-    public function createCsvDriver(): Driver
-    {
-        $class = config('reporter.drivers.csv.class');
+        if (! $class) {
+            throw new InvalidArgumentException("Driver [$driver] does not define a class.");
+        }
 
         return $this->container->make($class);
     }
