@@ -16,9 +16,7 @@ class ReporterServiceProvider extends ServiceProvider
 
         $this->app->bind('reporter.builder', ReportBuilder::class);
 
-        $this->app->singleton('reporter.manager', function ($app) {
-            return new ReporterManager($app);
-        });
+        $this->app->singleton('reporter.manager', ReporterManager::class);
     }
 
     public function boot(): void
